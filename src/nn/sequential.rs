@@ -55,7 +55,7 @@ mod tests {
 
     #[test]
     fn test_init() {
-        let model: Sequential = Sequential::new();
+        let _model: Sequential = Sequential::new();
     }
 
     #[test]

@@ -34,6 +34,6 @@ mod tests {
 
     #[test]
     fn test_init() {
-        let layer: FullyConnected = FullyConnected::new();
+        let _layer: FullyConnected = FullyConnected::new();
     }
 }
