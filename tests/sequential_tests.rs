@@ -1,4 +1,3 @@
-use std::sync::mpsc::TrySendError::Full;
 use neujal::nn::sequential::Sequential;
 use neujal::nn::layers::fully_connected::FullyConnected;
 
