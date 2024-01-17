@@ -1,13 +1,16 @@
 use crate::nn::layers::layer::Layer;
 
 pub struct FullyConnected;
-impl Layer for FullyConnected {
 
-    fn new() -> Self {
+impl FullyConnected {
+    pub fn new() -> Self {
         FullyConnected {
 
         }
     }
+}
+
+impl Layer for FullyConnected {
 
     fn forward(&self) {
         todo!()

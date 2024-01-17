@@ -10,7 +10,7 @@ fn create_sequential() {
 
 #[test]
 fn add_layers() {
-    let model: Sequential = Sequential::new();
+    let mut model: Sequential = Sequential::new();
 
     model.add(Box::new(FullyConnected::new()));
     model.add(Box::new(FullyConnected::new()));
