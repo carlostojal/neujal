@@ -1,7 +1,14 @@
 use crate::nn::layers::layer::Layer;
+use crate::nn::model::Model;
 
 pub struct Sequential {
     layers: Vec<Box<dyn Layer>>
+}
+
+impl Model for Sequential {
+    fn forward() {
+        todo!()
+    }
 }
 
 impl Sequential {
