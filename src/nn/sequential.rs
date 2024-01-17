@@ -1,6 +1,26 @@
 use crate::nn::layers::layer::Layer;
 use crate::nn::model::Model;
 
+///
+/// Sequential model.
+///
+/// The sequential model is a simple to use model.
+/// Just add layers to the model, and the execution flow will be automatically sequential.
+///
+/// # Examples
+/// ```
+/// use neujal::nn::layers::fully_connected::FullyConnected;
+/// use neujal::nn::sequential::Sequential;
+/// let mut seq: Sequential = Sequential::new();
+///
+/// // create the layers
+/// let fc1: FullyConnected = FullyConnected::new();
+/// let fc2: FullyConnected = FullyConnected::new();
+///
+/// // add the layers
+/// seq.add(Box::new(fc1));
+/// seq.add(Box::new(fc2));
+/// ```
 pub struct Sequential {
     layers: Vec<Box<dyn Layer>>
 }
