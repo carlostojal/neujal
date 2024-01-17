@@ -17,4 +17,12 @@ impl Layer for FullyConnected {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
+    #[test]
+    fn test_init() {
+        let layer: FullyConnected = FullyConnected::new();
+    }
+}

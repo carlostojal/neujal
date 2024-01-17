@@ -27,3 +27,25 @@ impl Sequential {
         &self.layers
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::nn::layers::fully_connected::FullyConnected;
+    use super::*;
+
+    #[test]
+    fn test_init() {
+        let model: Sequential = Sequential::new();
+    }
+
+    #[test]
+    fn test_add_layer() {
+        let mut model: Sequential = Sequential::new();
+
+        model.add(Box::new(FullyConnected::new()));
+        model.add(Box::new(FullyConnected::new()));
+        model.add(Box::new(FullyConnected::new()));
+
+        assert_eq!(model.get_layers().len(), 3);
+    }
+}
