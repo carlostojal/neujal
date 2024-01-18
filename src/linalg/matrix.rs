@@ -1,4 +1,6 @@
 use std::ops;
+use std::fmt;
+use std::fmt::{Formatter, Pointer, write};
 use rand::Rng;
 
 ///
@@ -55,6 +57,28 @@ impl Matrix {
 
     pub fn get_values(&self) -> &Vec<Vec<f32>> {
         &self.values
+    }
+}
+
+impl fmt::Display for Matrix {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        let mut out: String = String::new();
+
+        // for each row
+        for _x in 0..self.shape.0 {
+
+            // for each column
+            for _y in 0..self.shape.1 {
+                out += &self.values[_x][_y].to_string();
+
+                out += "\t";
+            }
+
+            // add a new line after each row
+            out += "\n";
+        }
+
+        write!(f, "{}", out)
     }
 }
 
