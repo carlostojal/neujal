@@ -1,6 +1,7 @@
 use std::ops;
 use std::fmt;
-use std::fmt::{Formatter, Pointer, write};
+use std::fmt::{Formatter};
+use std::ops::{Index, IndexMut};
 use rand::Rng;
 
 ///
@@ -51,12 +52,12 @@ impl Matrix {
         }
     }
 
-    pub fn get_shape(&self) -> (usize,usize) {
+    pub fn shape(&self) -> (usize,usize) {
         self.shape
     }
 
-    pub fn get_values(&self) -> &Vec<Vec<f32>> {
-        &self.values
+    pub fn len(&self) -> usize {
+        self.values.len()
     }
 }
 
@@ -69,7 +70,7 @@ impl fmt::Display for Matrix {
 
             // for each column
             for _y in 0..self.shape.1 {
-                out += &self.values[_x][_y].to_string();
+                out += &format!("{:.2}", self.values[_x][_y]);
 
                 out += "\t";
             }
@@ -116,6 +117,22 @@ impl ops::Mul<Matrix> for Matrix {
     }
 }
 
+// overload index operator
+impl Index<usize> for Matrix {
+    type Output = Vec<f32>;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.values[index]
+    }
+}
+
+// overload mutable index operator
+impl IndexMut<usize> for Matrix {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.values[index]
+    }
+}
+
 // unit tests
 #[cfg(test)]
 mod tests {
@@ -132,6 +149,16 @@ mod tests {
     }
 
     #[test]
+    fn test_create_index_operator() {
+        let shape: (usize,usize) = (3,3);
+        let matrix: Matrix = Matrix::new(shape, false);
+
+        assert_eq!(matrix.shape, shape);
+        assert_eq!(matrix.len(), shape.0);
+        assert_eq!(matrix[0].len(), shape.1);
+    }
+
+    #[test]
     fn test_create_random() {
         let shape: (usize,usize) = (3,3);
         let matrix: Matrix = Matrix::new(shape, true);
@@ -139,6 +166,21 @@ mod tests {
         assert_eq!(matrix.shape, shape);
         assert_eq!(matrix.values.len(), shape.0);
         assert_eq!(matrix.values[0].len(), shape.1);
+    }
+
+    #[test]
+    fn test_display() {
+        let mut matrix: Matrix = Matrix::new((2, 2), false);
+        matrix[0][0] = 1.0;
+        matrix[0][1] = 2.0;
+        matrix[1][0] = 3.0;
+        matrix[1][1] = 4.0;
+
+        println!("{}", matrix);
+
+        let s: String = "1.00\t2.00\t\n3.00\t4.00\t\n".to_string();
+
+        assert_eq!(matrix.to_string(), s);
     }
 }
 
