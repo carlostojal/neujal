@@ -117,6 +117,32 @@ impl ops::Mul<Matrix> for Matrix {
     }
 }
 
+// overload addition operator
+impl ops::Add<Matrix> for Matrix {
+    type Output = Matrix;
+
+    fn add(self, rhs: Matrix) -> Self::Output {
+        // verify shape compatibility
+        if self.shape != rhs.shape {
+            panic!("First and second matrices shapes should be the same!");
+        }
+
+        let mut out: Matrix = Matrix::new(self.shape, false);
+
+        // for each row
+        for _x in 0..self.shape.0 {
+
+            // for each column
+            for _y in 0..self.shape.1 {
+
+                out.values[_x][_y] = self.values[_x][_y] + rhs.values[_x][_y];
+            }
+        }
+
+        out
+    }
+}
+
 // overload index operator
 impl Index<usize> for Matrix {
     type Output = Vec<f32>;
@@ -182,5 +208,9 @@ mod tests {
 
         assert_eq!(matrix.to_string(), s);
     }
+
+    // TODO: multiplication tests
+
+    // TODO: addition tests
 }
 
