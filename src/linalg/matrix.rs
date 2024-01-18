@@ -58,6 +58,40 @@ impl Matrix {
     }
 }
 
+// overload multiplication operator
+impl ops::Mul<Matrix> for Matrix {
+    type Output = Matrix;
+
+    fn mul(self, rhs: Matrix) -> Self::Output {
+        // verify shape compatibility
+        if self.shape.1 != rhs.shape.0 {
+            panic!("Columns of first matrix don't match rows of the second!");
+        }
+
+        // declare the output matrix
+        let mut out: Matrix = Matrix::new((self.shape.0, rhs.shape.1), false);
+
+        // for each row of the first
+        for _x in 0..self.shape.0 {
+
+            // for each column of the second
+            for _y in 0..rhs.shape.1 {
+
+                let mut dot_product: f32 = 0.0;
+
+                // for each column of the first / row of the second
+                for _z in 0..self.shape.1 {
+                    dot_product += self.values[_x][_z] * rhs.values[_z][_y];
+                }
+
+                out.values[_x][_y] = dot_product;
+            }
+        }
+
+        out
+    }
+}
+
 // unit tests
 #[cfg(test)]
 mod tests {
