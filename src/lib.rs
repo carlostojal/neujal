@@ -5,7 +5,8 @@
 //! A neural network library written in Rust for learning purposes.
 //! 
 //! ## Features
-//! 
+//!
+//! - [ ] Linear algebra
 //! - [ ] Feedforward
 //! - [ ] Backpropagation
 //! - [ ] Convolutional Neural Networks
@@ -25,3 +26,4 @@
 //! 
 
 pub mod nn;
+pub mod linalg;
