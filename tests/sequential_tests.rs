@@ -8,11 +8,20 @@ fn create_sequential() {
 }
 
 #[test]
-fn add_layers() {
+fn add_layers_compatible() {
     let mut model: Sequential = Sequential::new();
 
-    model.add(Box::new(FullyConnected::new()));
-    model.add(Box::new(FullyConnected::new()));
+    model.add(Box::new(FullyConnected::new(10, 100)));
+    model.add(Box::new(FullyConnected::new(100, 10)));
 
     assert_eq!(model.get_layers().len(), 2);
+}
+
+#[test]
+#[should_panic]
+fn add_layers_incompatible() {
+    let mut model: Sequential = Sequential::new();
+
+    model.add(Box::new(FullyConnected::new(10, 100)));
+    model.add(Box::new(FullyConnected::new(140, 10)));
 }

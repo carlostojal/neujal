@@ -1,4 +1,4 @@
-use crate::nn::layers::layer::Layer;
+use crate::nn::layers::fully_connected::FullyConnected;
 use crate::nn::model::Model;
 
 ///
@@ -14,15 +14,15 @@ use crate::nn::model::Model;
 /// let mut seq: Sequential = Sequential::new();
 ///
 /// // create the layers
-/// let fc1: FullyConnected = FullyConnected::new();
-/// let fc2: FullyConnected = FullyConnected::new();
+/// let fc1: FullyConnected = FullyConnected::new(10, 100);
+/// let fc2: FullyConnected = FullyConnected::new(100, 10);
 ///
 /// // add the layers
 /// seq.add(Box::new(fc1));
 /// seq.add(Box::new(fc2));
 /// ```
 pub struct Sequential {
-    layers: Vec<Box<dyn Layer>>
+    layers: Vec<Box<FullyConnected>>
 }
 
 impl Model for Sequential {
@@ -39,11 +39,17 @@ impl Sequential {
         }
     }
 
-    pub fn add(&mut self, layer: Box<dyn Layer>) {
+    pub fn add(&mut self, layer: Box<FullyConnected>) {
+        if self.layers.len() > 0 {
+            // verify compatibility of this layer with the last
+            if (&self.layers[self.layers.len()-1]).get_out_features() != layer.get_in_features() {
+                panic!("Input features of this layer incompatible with last layer in model!");
+            }
+        }
         self.layers.push(layer);
     }
 
-    pub fn get_layers(&self) -> &Vec<Box<dyn Layer>> {
+    pub fn get_layers(&self) -> &Vec<Box<FullyConnected>> {
         &self.layers
     }
 }
@@ -59,13 +65,31 @@ mod tests {
     }
 
     #[test]
-    fn test_add_layer() {
+    fn test_add_layer_compatible() {
         let mut model: Sequential = Sequential::new();
 
-        model.add(Box::new(FullyConnected::new()));
-        model.add(Box::new(FullyConnected::new()));
-        model.add(Box::new(FullyConnected::new()));
+        let fc1: FullyConnected = FullyConnected::new(784, 512);
+        let fc2: FullyConnected = FullyConnected::new(512, 100);
+        let fc3: FullyConnected = FullyConnected::new(100, 10);
+
+        model.add(Box::new(fc1));
+        model.add(Box::new(fc2));
+        model.add(Box::new(fc3));
 
         assert_eq!(model.get_layers().len(), 3);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_add_layer_incompatible() {
+        let mut model: Sequential = Sequential::new();
+
+        let fc1: FullyConnected = FullyConnected::new(784, 512);
+        let fc2: FullyConnected = FullyConnected::new(256, 100);
+        let fc3: FullyConnected = FullyConnected::new(100, 10);
+
+        model.add(Box::new(fc1));
+        model.add(Box::new(fc2));
+        model.add(Box::new(fc3));
     }
 }

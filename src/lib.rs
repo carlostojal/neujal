@@ -19,8 +19,8 @@
 //! 
 //! let mut model: Sequential = Sequential::new();
 //! 
-//! model.add(Box::new(FullyConnected::new()));
-//! model.add(Box::new(FullyConnected::new()));
+//! model.add(Box::new(FullyConnected::new(784, 100)));
+//! model.add(Box::new(FullyConnected::new(100, 10)));
 //! ```
 //! 
 

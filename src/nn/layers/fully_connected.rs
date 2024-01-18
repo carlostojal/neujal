@@ -9,15 +9,27 @@ use crate::nn::layers::layer::Layer;
 ///
 /// ```
 /// use neujal::nn::layers::fully_connected::FullyConnected;
-/// let fc: FullyConnected = FullyConnected::new();
+/// let fc: FullyConnected = FullyConnected::new(784, 10);
 /// ```
-pub struct FullyConnected;
+pub struct FullyConnected {
+    in_features: u32,
+    out_features: u32
+}
 
 impl FullyConnected {
-    pub fn new() -> Self {
+    pub fn new(in_features: u32, out_features: u32) -> Self {
         FullyConnected {
-
+            in_features,
+            out_features
         }
+    }
+
+    pub fn get_in_features(&self) -> u32 {
+        self.in_features
+    }
+
+    pub fn get_out_features(&self) -> u32 {
+        self.out_features
     }
 }
 
@@ -34,6 +46,6 @@ mod tests {
 
     #[test]
     fn test_init() {
-        let _layer: FullyConnected = FullyConnected::new();
+        let _layer: FullyConnected = FullyConnected::new(10, 10);
     }
 }
