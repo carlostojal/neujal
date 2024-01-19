@@ -342,5 +342,29 @@ mod tests {
 
         assert!(m1 * m2 == expected)
     }
+
+    #[test]
+    fn test_mul_fail() {
+
+        let mut m1: Matrix = Matrix::new((2, 2), false);
+        m1[0][0] = 1.0;
+        m1[0][1] = 2.0;
+        m1[1][0] = 3.0;
+        m1[1][1] = 4.0;
+
+        let mut m2: Matrix = Matrix::new((2, 2), false);
+        m2[0][0] = 4.0;
+        m2[0][1] = 3.0;
+        m2[1][0] = 9.0;
+        m2[1][1] = 1.0;
+
+        let mut not_expected: Matrix = Matrix::new((2, 2), false);
+        not_expected[0][0] = 8.0;
+        not_expected[0][1] = 5.0;
+        not_expected[1][0] = 20.0;
+        not_expected[1][1] = 13.0;
+
+        assert!(m1 * m2 != not_expected)
+    }
 }
 
