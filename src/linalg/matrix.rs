@@ -2,7 +2,6 @@ use std::ops;
 use std::fmt;
 use std::fmt::{Formatter};
 use std::ops::{Index, IndexMut};
-use std::cmp;
 use rand::Rng;
 
 ///
@@ -144,6 +143,8 @@ impl ops::Add<Matrix> for Matrix {
     }
 }
 
+// TODO: overload subtraction operator
+
 // overload comparison operator
 impl PartialEq<Self> for Matrix {
     fn eq(&self, other: &Self) -> bool {
@@ -153,7 +154,7 @@ impl PartialEq<Self> for Matrix {
 
             // for each column
             for _y in 0..self.shape.1 {
-                let mut diff: f32 = 0.0;
+                let diff: f32;
                 if self.values[_x][_y] > other.values[_x][_y] {
                     diff = self.values[_x][_y] - other.values[_x][_y];
                 } else {
@@ -299,10 +300,47 @@ mod tests {
         m2[1][0] = 2.0;
         m2[1][1] = 1.0;
 
-        let out: Matrix = m1 + m2;
-
+        let _out: Matrix = m1 + m2;
     }
 
-    // TODO: multiplication tests
+    #[test]
+    #[should_panic]
+    fn test_mul_incompatible() {
+        let mut m1: Matrix = Matrix::new((2, 1), false);
+        m1[0][0] = 1.0;
+        m1[1][0] = 2.0;
+
+        let mut m2: Matrix = Matrix::new((2, 2), false);
+        m2[0][0] = 4.0;
+        m2[0][1] = 5.0;
+        m2[1][0] = 2.0;
+        m2[1][1] = 1.0;
+
+        let _out: Matrix = m1 * m2;
+    }
+
+    #[test]
+    fn test_mul() {
+
+        let mut m1: Matrix = Matrix::new((2, 2), false);
+        m1[0][0] = 1.0;
+        m1[0][1] = 2.0;
+        m1[1][0] = 3.0;
+        m1[1][1] = 4.0;
+
+        let mut m2: Matrix = Matrix::new((2, 2), false);
+        m2[0][0] = 4.0;
+        m2[0][1] = 3.0;
+        m2[1][0] = 2.0;
+        m2[1][1] = 1.0;
+
+        let mut expected: Matrix = Matrix::new((2, 2), false);
+        expected[0][0] = 8.0;
+        expected[0][1] = 5.0;
+        expected[1][0] = 20.0;
+        expected[1][1] = 13.0;
+
+        assert!(m1 * m2 == expected)
+    }
 }
 
