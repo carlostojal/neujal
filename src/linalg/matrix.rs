@@ -143,7 +143,30 @@ impl ops::Add<Matrix> for Matrix {
     }
 }
 
-// TODO: overload subtraction operator
+impl ops::Sub<Matrix> for Matrix {
+    type Output = Matrix;
+
+    fn sub(self, rhs: Matrix) -> Self::Output {
+        // verify shape compatibility
+        if self.shape != rhs.shape {
+            panic!("First and second matrices shapes should be the same!");
+        }
+
+        let mut out: Matrix = Matrix::new(self.shape, false);
+
+        // for each row
+        for _x in 0..self.shape.0 {
+
+            // for each column
+            for _y in 0..self.shape.1 {
+
+                out.values[_x][_y] = self.values[_x][_y] - rhs.values[_x][_y];
+            }
+        }
+
+        out
+    }
+}
 
 // overload comparison operator
 impl PartialEq<Self> for Matrix {
@@ -304,6 +327,68 @@ mod tests {
     }
 
     #[test]
+    fn test_sub() {
+        let mut m1: Matrix = Matrix::new((2, 2), false);
+        m1[0][0] = 1.0;
+        m1[0][1] = 2.0;
+        m1[1][0] = 3.0;
+        m1[1][1] = 4.0;
+
+        let mut m2: Matrix = Matrix::new((2, 2), false);
+        m2[0][0] = 4.0;
+        m2[0][1] = 3.0;
+        m2[1][0] = 2.0;
+        m2[1][1] = 1.0;
+
+        let mut expected: Matrix = Matrix::new((2, 2), false);
+        expected[0][0] = -3.0;
+        expected[0][1] = -1.0;
+        expected[1][0] = 1.0;
+        expected[1][1] = 3.0;
+
+        assert!(m1-m2 == expected);
+    }
+
+    #[test]
+    fn test_sub_wrong() {
+        let mut m1: Matrix = Matrix::new((2, 2), false);
+        m1[0][0] = 1.0;
+        m1[0][1] = 2.0;
+        m1[1][0] = 3.0;
+        m1[1][1] = 4.0;
+
+        let mut m2: Matrix = Matrix::new((2, 2), false);
+        m2[0][0] = 4.0;
+        m2[0][1] = 5.0;
+        m2[1][0] = 2.0;
+        m2[1][1] = 1.0;
+
+        let mut not_expected: Matrix = Matrix::new((2, 2), false);
+        not_expected[0][0] = 5.0;
+        not_expected[0][1] = 5.0;
+        not_expected[1][0] = 5.0;
+        not_expected[1][1] = 5.0;
+
+        assert!(!(m1-m2 == not_expected));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_sub_incompatible() {
+        let mut m1: Matrix = Matrix::new((1, 2), false);
+        m1[0][0] = 1.0;
+        m1[0][1] = 2.0;
+
+        let mut m2: Matrix = Matrix::new((2, 2), false);
+        m2[0][0] = 4.0;
+        m2[0][1] = 5.0;
+        m2[1][0] = 2.0;
+        m2[1][1] = 1.0;
+
+        let _out: Matrix = m1 - m2;
+    }
+
+    #[test]
     #[should_panic]
     fn test_mul_incompatible() {
         let mut m1: Matrix = Matrix::new((2, 1), false);
@@ -344,7 +429,7 @@ mod tests {
     }
 
     #[test]
-    fn test_mul_fail() {
+    fn test_mul_wrong() {
 
         let mut m1: Matrix = Matrix::new((2, 2), false);
         m1[0][0] = 1.0;
