@@ -1,3 +1,4 @@
+use crate::linalg::tensor::Tensor;
 use crate::nn::layers::layer::Layer;
 
 /// Fully connected layer.
@@ -12,23 +13,27 @@ use crate::nn::layers::layer::Layer;
 /// let fc: FullyConnected = FullyConnected::new(784, 10);
 /// ```
 pub struct FullyConnected {
-    in_features: u32,
-    out_features: u32
+    weights: Tensor, // TODO: initialize
+    // TODO: biases
+    in_features: usize,
+    out_features: usize
 }
 
 impl FullyConnected {
-    pub fn new(in_features: u32, out_features: u32) -> Self {
+    pub fn new(in_features: usize, out_features: usize) -> Self {
+        let w: Tensor = Tensor::new((1, in_features, out_features), true);
         FullyConnected {
+            weights: w,
             in_features,
             out_features
         }
     }
 
-    pub fn get_in_features(&self) -> u32 {
+    pub fn get_in_features(&self) -> usize {
         self.in_features
     }
 
-    pub fn get_out_features(&self) -> u32 {
+    pub fn get_out_features(&self) -> usize {
         self.out_features
     }
 }
