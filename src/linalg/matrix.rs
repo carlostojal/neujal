@@ -84,10 +84,10 @@ impl fmt::Display for Matrix {
 }
 
 // overload multiplication operator
-impl ops::Mul<Matrix> for Matrix {
+impl ops::Mul<&Matrix> for &Matrix {
     type Output = Matrix;
 
-    fn mul(self, rhs: Matrix) -> Self::Output {
+    fn mul(self, rhs: &Matrix) -> Self::Output {
         // verify shape compatibility
         if self.shape.1 != rhs.shape.0 {
             panic!("Columns of first matrix don't match rows of the second!");
@@ -118,10 +118,10 @@ impl ops::Mul<Matrix> for Matrix {
 }
 
 // overload addition operator
-impl ops::Add<Matrix> for Matrix {
+impl ops::Add<&Matrix> for &Matrix {
     type Output = Matrix;
 
-    fn add(self, rhs: Matrix) -> Self::Output {
+    fn add(self, rhs: &Matrix) -> Self::Output {
         // verify shape compatibility
         if self.shape != rhs.shape {
             panic!("First and second matrices shapes should be the same!");
@@ -143,10 +143,10 @@ impl ops::Add<Matrix> for Matrix {
     }
 }
 
-impl ops::Sub<Matrix> for Matrix {
+impl ops::Sub<&Matrix> for &Matrix {
     type Output = Matrix;
 
-    fn sub(self, rhs: Matrix) -> Self::Output {
+    fn sub(self, rhs: &Matrix) -> Self::Output {
         // verify shape compatibility
         if self.shape != rhs.shape {
             panic!("First and second matrices shapes should be the same!");
@@ -284,7 +284,7 @@ mod tests {
         expected[1][0] = 5.0;
         expected[1][1] = 5.0;
 
-        assert!(m1+m2 == expected);
+        assert!(&m1+&m2 == expected);
     }
 
     #[test]
@@ -307,7 +307,7 @@ mod tests {
         not_expected[1][0] = 5.0;
         not_expected[1][1] = 5.0;
 
-        assert!(!(m1+m2 == not_expected));
+        assert!(!(&m1+&m2 == not_expected));
     }
 
     #[test]
@@ -323,7 +323,7 @@ mod tests {
         m2[1][0] = 2.0;
         m2[1][1] = 1.0;
 
-        let _out: Matrix = m1 + m2;
+        let _out: Matrix = &m1 + &m2;
     }
 
     #[test]
@@ -346,7 +346,7 @@ mod tests {
         expected[1][0] = 1.0;
         expected[1][1] = 3.0;
 
-        assert!(m1-m2 == expected);
+        assert!(&m1-&m2 == expected);
     }
 
     #[test]
@@ -369,7 +369,7 @@ mod tests {
         not_expected[1][0] = 5.0;
         not_expected[1][1] = 5.0;
 
-        assert!(!(m1-m2 == not_expected));
+        assert!(!(&m1-&m2 == not_expected));
     }
 
     #[test]
@@ -385,7 +385,7 @@ mod tests {
         m2[1][0] = 2.0;
         m2[1][1] = 1.0;
 
-        let _out: Matrix = m1 - m2;
+        let _out: Matrix = &m1 - &m2;
     }
 
     #[test]
@@ -401,7 +401,7 @@ mod tests {
         m2[1][0] = 2.0;
         m2[1][1] = 1.0;
 
-        let _out: Matrix = m1 * m2;
+        let _out: Matrix = &m1 * &m2;
     }
 
     #[test]
@@ -425,7 +425,7 @@ mod tests {
         expected[1][0] = 20.0;
         expected[1][1] = 13.0;
 
-        assert!(m1 * m2 == expected)
+        assert!(&m1 * &m2 == expected)
     }
 
     #[test]
@@ -449,7 +449,7 @@ mod tests {
         not_expected[1][0] = 20.0;
         not_expected[1][1] = 13.0;
 
-        assert!(m1 * m2 != not_expected)
+        assert!(&m1 * &m2 != not_expected)
     }
 }
 

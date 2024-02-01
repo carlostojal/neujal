@@ -44,7 +44,7 @@ fn multiply_matrices() {
     expected[1][0] = 20.0;
     expected[1][1] = 13.0;
 
-    assert!(m1 * m2 == expected)
+    assert!(&m1 * &m2 == expected)
 }
 
 #[test]
@@ -67,7 +67,7 @@ fn subtract_matrices() {
     expected[1][0] = 1.0;
     expected[1][1] = 3.0;
 
-    assert!(m1-m2 == expected);
+    assert!(&m1-&m2 == expected);
 }
 
 #[test]
@@ -90,7 +90,7 @@ fn sum_matrices() {
     expected[1][0] = 5.0;
     expected[1][1] = 5.0;
 
-    assert!(m1+m2 == expected);
+    assert!(&m1+&m2 == expected);
 }
 
 #[test]
@@ -106,7 +106,7 @@ fn subtract_incompatible() {
     m2[1][0] = 2.0;
     m2[1][1] = 1.0;
 
-    let _out: Matrix = m1 - m2;
+    let _out: Matrix = &m1 - &m2;
 }
 
 #[test]
@@ -122,5 +122,5 @@ fn multiply_incompatible() {
     m2[1][0] = 2.0;
     m2[1][1] = 1.0;
 
-    let _out: Matrix = m1 * m2;
+    let _out: Matrix = &m1 * &m2;
 }
